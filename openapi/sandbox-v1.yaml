@@ -3,7 +3,7 @@ info:
   title: F2B Sandbox API
   description: |
     灵境云 AI 沙箱产品 API（f2b-sandbox）。
-    浏览器应经 f2b-web BFF；SDK / 自动化可用 API Key 直连（鉴权后续版本）。
+    浏览器应经 f2b-web BFF；SDK 直连时使用 API Key（F2B_AUTH_MODE=api_key）。
   version: 0.1.0
   license:
     name: Apache-2.0
@@ -11,6 +11,34 @@ servers:
   - url: http://localhost:8787
     description: local f2b-sandbox
 paths:
+  /v1/api-keys:
+    get:
+      operationId: listApiKeys
+      summary: 列出 API Key（无明文）
+      security: [{ AdminToken: [] }]
+      responses:
+        "200":
+          description: OK
+    post:
+      operationId: createApiKey
+      summary: 创建 API Key（secret 仅返回一次）
+      security: [{ AdminToken: [] }]
+      responses:
+        "201":
+          description: Created with secret once
+  /v1/api-keys/{id}:
+    delete:
+      operationId: revokeApiKey
+      summary: 吊销 API Key
+      security: [{ AdminToken: [] }]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Revoked
   /v1/sandboxes:
     get:
       operationId: listSandboxes
@@ -129,6 +157,20 @@ paths:
         "200":
           description: OK
 components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: "API Key sk_live_… (Authorization Bearer)"
+    ApiKeyHeader:
+      type: apiKey
+      in: header
+      name: X-API-Key
+    AdminToken:
+      type: apiKey
+      in: header
+      name: X-F2B-Admin-Token
+
   parameters:
     SandboxId:
       name: id
