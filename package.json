@@ -1,0 +1,29 @@
+{
+  "name": "@f2b/spec",
+  "version": "0.1.0",
+  "description": "F2B / 灵境云跨产品契约（OpenAPI · 错误码 · TS 类型）",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./errors": "./src/errors.ts",
+    "./sandbox": "./src/sandbox.ts"
+  },
+  "files": ["src", "openapi", "errors", "README.md", "LICENSE"],
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  },
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/f2b-dev/f2b-spec.git"
+  }
+}

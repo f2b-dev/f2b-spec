@@ -1,0 +1,13 @@
+{
+  "VALIDATION_ERROR": { "http": 400, "message": "Request validation failed" },
+  "NOT_FOUND": { "http": 404, "message": "Resource not found" },
+  "SANDBOX_NOT_FOUND": { "http": 404, "message": "Sandbox not found" },
+  "SANDBOX_NOT_RUNNING": { "http": 409, "message": "Sandbox is not running" },
+  "SANDBOX_ALREADY_TERMINAL": { "http": 409, "message": "Sandbox already terminal" },
+  "INVALID_PATH": { "http": 400, "message": "Invalid sandbox path" },
+  "COMMAND_TIMEOUT": { "http": 408, "message": "Command timed out" },
+  "COMMAND_FAILED": { "http": 422, "message": "Command failed" },
+  "BACKEND_UNAVAILABLE": { "http": 503, "message": "Sandbox backend unavailable" },
+  "UNAUTHORIZED": { "http": 401, "message": "Unauthorized" },
+  "INTERNAL": { "http": 500, "message": "Internal error" }
+}
