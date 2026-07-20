@@ -9,6 +9,8 @@ export const ErrorCode = {
   COMMAND_TIMEOUT: "COMMAND_TIMEOUT",
   COMMAND_FAILED: "COMMAND_FAILED",
   BACKEND_UNAVAILABLE: "BACKEND_UNAVAILABLE",
+  TUNNEL_NOT_FOUND: "TUNNEL_NOT_FOUND",
+  TUNNEL_ALREADY_CLOSED: "TUNNEL_ALREADY_CLOSED",
   UNAUTHORIZED: "UNAUTHORIZED",
   INTERNAL: "INTERNAL",
 } as const;
@@ -57,7 +59,10 @@ export function statusForCode(code: ErrorCode): number {
       return 401;
     case ErrorCode.NOT_FOUND:
     case ErrorCode.SANDBOX_NOT_FOUND:
+    case ErrorCode.TUNNEL_NOT_FOUND:
       return 404;
+    case ErrorCode.TUNNEL_ALREADY_CLOSED:
+      return 409;
     case ErrorCode.SANDBOX_NOT_RUNNING:
     case ErrorCode.SANDBOX_ALREADY_TERMINAL:
       return 409;

@@ -1,0 +1,151 @@
+openapi: 3.1.0
+info:
+  title: F2B Tunnel API
+  description: |
+    灵境云隧道代理（f2b-tunnel）：为沙箱端口生成预览 URL，并在 dev 路径做反向代理。
+    浏览器应经 f2b-web BFF；SDK/控制面使用用户 API Key（后续对齐 sandbox 鉴权）。
+  version: 0.1.0
+  license:
+    name: Apache-2.0
+servers:
+  - url: http://localhost:8790
+    description: local f2b-tunnel
+paths:
+  /healthz:
+    get:
+      operationId: tunnelHealth
+      summary: 健康检查
+      responses:
+        "200":
+          description: OK
+  /v1/tunnels:
+    get:
+      operationId: listTunnels
+      summary: 列出隧道
+      parameters:
+        - name: sandboxId
+          in: query
+          schema: { type: string }
+        - name: projectId
+          in: query
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tunnels:
+                    type: array
+                    items: { $ref: "#/components/schemas/TunnelRecord" }
+    post:
+      operationId: createTunnel
+      summary: 创建隧道（暴露沙箱端口）
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CreateTunnel" }
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tunnel: { $ref: "#/components/schemas/TunnelRecord" }
+  /v1/tunnels/{id}:
+    get:
+      operationId: getTunnel
+      summary: 隧道详情
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not found
+    delete:
+      operationId: closeTunnel
+      summary: 关闭隧道
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Closed
+  /t/{id}/{path}:
+    get:
+      operationId: proxyTunnelGet
+      summary: 公开预览入口（反向代理到 target）
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+        - name: path
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Proxied response
+        "404":
+          description: Tunnel missing or closed
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema: { type: string }
+components:
+  schemas:
+    CreateTunnel:
+      type: object
+      required: [sandboxId, port]
+      properties:
+        sandboxId: { type: string }
+        port: { type: integer, minimum: 1, maximum: 65535 }
+        name: { type: string }
+        targetUrl: { type: string, format: uri }
+        projectId: { type: string, default: default }
+        ttlSec: { type: integer }
+    TunnelRecord:
+      type: object
+      required:
+        - id
+        - name
+        - sandboxId
+        - port
+        - projectId
+        - status
+        - publicUrl
+        - targetUrl
+        - error
+        - createdAt
+        - updatedAt
+        - expiresAt
+        - closedAt
+      properties:
+        id: { type: string }
+        name: { type: string }
+        sandboxId: { type: string }
+        port: { type: integer }
+        projectId: { type: string }
+        status:
+          type: string
+          enum: [provisioning, active, closed, failed]
+        publicUrl: { type: string }
+        targetUrl: { type: string }
+        error: { type: string, nullable: true }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+        expiresAt: { type: string, format: date-time, nullable: true }
+        closedAt: { type: string, format: date-time, nullable: true }
