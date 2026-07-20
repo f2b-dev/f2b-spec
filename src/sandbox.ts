@@ -62,6 +62,19 @@ export const CommandResultSchema = z.object({
 });
 export type CommandResult = z.infer<typeof CommandResultSchema>;
 
+/** SSE 命令流事件（POST /v1/sandboxes/{id}/commands/stream） */
+export const CommandStreamEventSchema = z.discriminatedUnion("type", [
+  z.object({ type: z.literal("stdout"), text: z.string() }),
+  z.object({ type: z.literal("stderr"), text: z.string() }),
+  z.object({ type: z.literal("result"), result: CommandResultSchema }),
+  z.object({
+    type: z.literal("error"),
+    code: z.string(),
+    message: z.string(),
+  }),
+]);
+export type CommandStreamEvent = z.infer<typeof CommandStreamEventSchema>;
+
 export const WriteFileSchema = z.object({
   path: z.string().min(1).max(4096),
   content: z.string().max(2_000_000),

@@ -121,6 +121,28 @@ paths:
                 type: object
                 properties:
                   result: { $ref: "#/components/schemas/CommandResult" }
+  /v1/sandboxes/{id}/commands/stream:
+    post:
+      operationId: runCommandStream
+      summary: 流式执行命令（SSE）
+      description: |
+        `text/event-stream`。事件 data 为 JSON：
+        `{type:"stdout"|"stderr",text}` → `{type:"result",result}`；
+        失败时 `{type:"error",code,message}`。
+      parameters:
+        - $ref: "#/components/parameters/SandboxId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/RunCommand" }
+      responses:
+        "200":
+          description: SSE stream
+          content:
+            text/event-stream:
+              schema:
+                type: string
   /v1/sandboxes/{id}/files:
     get:
       operationId: readOrListFiles
