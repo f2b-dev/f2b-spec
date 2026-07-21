@@ -191,6 +191,22 @@ paths:
                 required: [usage]
                 properties:
                   usage: { $ref: "#/components/schemas/UsageSummary" }
+  /v1/templates:
+    get:
+      operationId: listTemplates
+      summary: 预置模板目录
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [templates]
+                properties:
+                  templates:
+                    type: array
+                    items: { $ref: "#/components/schemas/TemplateRef" }
   /healthz:
     get:
       operationId: healthz
@@ -299,6 +315,18 @@ components:
         byDay:
           type: array
           items: { $ref: "#/components/schemas/UsageDayBucket" }
+    TemplateRef:
+      type: object
+      required: [id, name, description]
+      properties:
+        id: { type: string, description: "创建沙箱时 template 字段" }
+        name: { type: string }
+        description: { type: string }
+        image: { type: string }
+        tags:
+          type: array
+          items: { type: string }
+        popular: { type: boolean }
     ApiError:
       type: object
       properties:

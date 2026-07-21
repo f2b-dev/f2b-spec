@@ -102,21 +102,34 @@ export const TemplateRefSchema = z.object({
   description: z.string(),
   image: z.string().optional(),
   tags: z.array(z.string()).default([]),
+  popular: z.boolean().optional(),
 });
 export type TemplateRef = z.infer<typeof TemplateRefSchema>;
 
+/** 创建时 template 字段取 id；与控制台目录对齐 */
 export const BUILTIN_TEMPLATES: TemplateRef[] = [
   {
     id: "base",
     name: "Base Linux",
-    description: "精简 Linux 环境，适合通用命令与脚本。",
+    description: "精简 Linux 根文件系统，适合通用命令与脚本执行。",
+    image: "lingjing/base:latest",
     tags: ["linux", "shell"],
+    popular: true,
   },
   {
     id: "code-interpreter",
     name: "Code Interpreter",
-    description: "预装 Python / Node 运行时，适合代码执行与数据分析。",
-    tags: ["python", "node", "code"],
+    description: "预装 Python、Node 等，适合 Agent 写代码与分析。",
+    image: "lingjing/code-interpreter:latest",
+    tags: ["python", "node", "data"],
+    popular: true,
+  },
+  {
+    id: "browser",
+    name: "Browser (soon)",
+    description: "带无头浏览器的模板，用于页面抓取与 UI 自动化（路线图）。",
+    image: "lingjing/browser:preview",
+    tags: ["browser", "preview"],
   },
 ];
 
