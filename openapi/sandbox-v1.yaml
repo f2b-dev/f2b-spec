@@ -102,6 +102,36 @@ paths:
                 type: object
                 properties:
                   sandbox: { $ref: "#/components/schemas/SandboxRecord" }
+  /v1/sandboxes/{id}/pause:
+    post:
+      operationId: pauseSandbox
+      summary: 暂停沙箱（fake 支持；Cube 视集群）
+      parameters:
+        - $ref: "#/components/parameters/SandboxId"
+      responses:
+        "200":
+          description: Paused
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sandbox: { $ref: "#/components/schemas/SandboxRecord" }
+  /v1/sandboxes/{id}/resume:
+    post:
+      operationId: resumeSandbox
+      summary: 恢复已暂停沙箱
+      parameters:
+        - $ref: "#/components/parameters/SandboxId"
+      responses:
+        "200":
+          description: Running
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sandbox: { $ref: "#/components/schemas/SandboxRecord" }
   /v1/sandboxes/{id}/commands:
     post:
       operationId: runCommand
