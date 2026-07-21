@@ -9,6 +9,8 @@ export const ErrorCode = {
   COMMAND_TIMEOUT: "COMMAND_TIMEOUT",
   COMMAND_FAILED: "COMMAND_FAILED",
   BACKEND_UNAVAILABLE: "BACKEND_UNAVAILABLE",
+  /** 单机并发 running/provisioning 达上限 */
+  CAPACITY_EXCEEDED: "CAPACITY_EXCEEDED",
   TUNNEL_NOT_FOUND: "TUNNEL_NOT_FOUND",
   TUNNEL_ALREADY_CLOSED: "TUNNEL_ALREADY_CLOSED",
   UNAUTHORIZED: "UNAUTHORIZED",
@@ -70,6 +72,8 @@ export function statusForCode(code: ErrorCode): number {
       return 408;
     case ErrorCode.BACKEND_UNAVAILABLE:
       return 503;
+    case ErrorCode.CAPACITY_EXCEEDED:
+      return 429;
     case ErrorCode.COMMAND_FAILED:
       return 422;
     default:

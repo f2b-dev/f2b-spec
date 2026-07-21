@@ -8,6 +8,7 @@
   "COMMAND_TIMEOUT": { "http": 408, "message": "Command timed out" },
   "COMMAND_FAILED": { "http": 422, "message": "Command failed" },
   "BACKEND_UNAVAILABLE": { "http": 503, "message": "Sandbox backend unavailable" },
+  "CAPACITY_EXCEEDED": { "http": 429, "message": "Concurrent sandbox capacity exceeded" },
   "UNAUTHORIZED": { "http": 401, "message": "Unauthorized" },
   "INTERNAL": { "http": 500, "message": "Internal error" }
 }
