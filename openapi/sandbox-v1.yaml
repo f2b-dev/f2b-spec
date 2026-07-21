@@ -172,6 +172,25 @@ paths:
       responses:
         "201":
           description: Written
+  /v1/usage:
+    get:
+      operationId: getUsage
+      summary: 近 N 日用量聚合（UTC 日）
+      parameters:
+        - name: days
+          in: query
+          description: 回溯天数，1–90，默认 7
+          schema: { type: integer, minimum: 1, maximum: 90, default: 7 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [usage]
+                properties:
+                  usage: { $ref: "#/components/schemas/UsageSummary" }
   /healthz:
     get:
       operationId: healthz
@@ -261,6 +280,25 @@ components:
         path: { type: string }
         content: { type: string }
         encoding: { type: string, enum: [utf8, base64], default: utf8 }
+    UsageDayBucket:
+      type: object
+      required: [day, sandboxHours, commands, durationMs]
+      properties:
+        day: { type: string, description: "UTC date YYYY-MM-DD" }
+        sandboxHours: { type: number }
+        commands: { type: integer }
+        durationMs: { type: number }
+    UsageSummary:
+      type: object
+      required: [days, totalDurationMs, totalSandboxHours, totalCommands, byDay]
+      properties:
+        days: { type: integer }
+        totalDurationMs: { type: number }
+        totalSandboxHours: { type: number }
+        totalCommands: { type: integer }
+        byDay:
+          type: array
+          items: { $ref: "#/components/schemas/UsageDayBucket" }
     ApiError:
       type: object
       properties:

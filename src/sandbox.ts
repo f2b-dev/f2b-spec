@@ -119,3 +119,22 @@ export const BUILTIN_TEMPLATES: TemplateRef[] = [
     tags: ["python", "node", "code"],
   },
 ];
+
+/** 用量按 UTC 日聚合的一天桶 */
+export const UsageDayBucketSchema = z.object({
+  day: z.string(),
+  sandboxHours: z.number().nonnegative(),
+  commands: z.number().int().nonnegative(),
+  durationMs: z.number().nonnegative(),
+});
+export type UsageDayBucket = z.infer<typeof UsageDayBucketSchema>;
+
+/** GET /v1/usage 响应中的 usage 对象 */
+export const UsageSummarySchema = z.object({
+  days: z.number().int().positive(),
+  totalDurationMs: z.number().nonnegative(),
+  totalSandboxHours: z.number().nonnegative(),
+  totalCommands: z.number().int().nonnegative(),
+  byDay: z.array(UsageDayBucketSchema),
+});
+export type UsageSummary = z.infer<typeof UsageSummarySchema>;
