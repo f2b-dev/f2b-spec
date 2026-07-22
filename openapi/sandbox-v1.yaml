@@ -311,9 +311,55 @@ paths:
   /healthz:
     get:
       operationId: healthz
+      summary: 健康与单机容量快照（无鉴权；不含密钥）
       responses:
         "200":
           description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [ok, service, backend, auth, activeSandboxes, capacity, reaper]
+                properties:
+                  ok: { type: boolean }
+                  service: { type: string, example: f2b-sandbox }
+                  backend:
+                    type: string
+                    description: 数据面 kind（如 fake / cube）；控制台可诚实展示
+                    example: fake
+                  auth:
+                    type: string
+                    description: 鉴权模式（off / api_key 等）；不回显密钥
+                  db:
+                    type: string
+                    description: 控制面库路径（运维用；非密钥）
+                  maxConcurrentSandboxes:
+                    type: integer
+                    description: 兼容字段；等于 capacity.max（未配置硬顶时省略）
+                  activeSandboxes:
+                    type: integer
+                    description: 当前占用并发槽的沙箱数（provisioning/running/paused）
+                  capacity:
+                    type: object
+                    required: [active, max, available]
+                    properties:
+                      active: { type: integer }
+                      max:
+                        type: integer
+                        nullable: true
+                        description: F2B_MAX_CONCURRENT_SANDBOXES；null=不限制
+                      available:
+                        type: integer
+                        nullable: true
+                        description: max-active；null=不限制
+                  reaper:
+                    type: object
+                    required: [enabled, intervalMs]
+                    properties:
+                      enabled: { type: boolean }
+                      intervalMs:
+                        type: integer
+                        description: F2B_TIMEOUT_REAPER_MS 生效间隔；关闭时为 0
 components:
   securitySchemes:
     BearerAuth:
