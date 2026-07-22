@@ -354,7 +354,7 @@ components:
         timeoutMs:
           type: integer
           nullable: true
-          description: 从 startedAt 起算的存活超时；null 取消超时
+          description: 空闲超时窗口（ms）；null 取消。设置非 null 时刷新 lastActiveAt
         metadata:
           type: object
           additionalProperties: { type: string }
@@ -386,6 +386,11 @@ components:
         createdAt: { type: string, format: date-time }
         updatedAt: { type: string, format: date-time }
         startedAt: { type: string, format: date-time, nullable: true }
+        lastActiveAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: 最近活动时间；超时 = lastActiveAt + timeoutMs
         finishedAt: { type: string, format: date-time, nullable: true }
         durationSec: { type: integer }
     RunCommand:

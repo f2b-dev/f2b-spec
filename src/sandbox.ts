@@ -28,7 +28,10 @@ export type CreateSandboxInput = z.infer<typeof CreateSandboxSchema>;
 /** PATCH 沙箱：延期 timeout、合并 metadata（活动态） */
 export const UpdateSandboxSchema = z
   .object({
-    /** 新的存活超时（从 startedAt 起算）；null 表示取消超时 */
+    /**
+     * 新的空闲超时窗口（毫秒）；null 取消超时。
+     * 设置非 null 时会同时刷新 lastActiveAt（从现在起重新计时）。
+     */
     timeoutMs: z
       .number()
       .int()
@@ -63,6 +66,11 @@ export const SandboxRecordSchema = z.object({
   createdAt: z.string(),
   updatedAt: z.string(),
   startedAt: z.string().nullable(),
+  /**
+   * 最近一次活动时间（命令/文件等）。
+   * 有 timeoutMs 时，到期点 = lastActiveAt（缺省回落 startedAt/createdAt）+ timeoutMs。
+   */
+  lastActiveAt: z.string().nullable().optional(),
   finishedAt: z.string().nullable(),
   durationSec: z.number().int().nonnegative(),
 });
