@@ -110,6 +110,14 @@ export const ReadFileQuerySchema = z.object({
 });
 export type ReadFileQuery = z.infer<typeof ReadFileQuerySchema>;
 
+/** DELETE /v1/sandboxes/{id}/files?path= */
+export const DeleteFileQuerySchema = z.object({
+  path: z.string().min(1).max(4096),
+  /** 目录时删除其下全部条目（fake 前缀删除；Cube 视 envd） */
+  recursive: z.boolean().optional().default(false),
+});
+export type DeleteFileQuery = z.infer<typeof DeleteFileQuerySchema>;
+
 export const FileEntrySchema = z.object({
   path: z.string(),
   name: z.string(),

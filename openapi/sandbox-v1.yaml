@@ -221,6 +221,24 @@ paths:
       responses:
         "201":
           description: Written
+    delete:
+      operationId: deleteFile
+      summary: 删除沙箱内文件或目录
+      parameters:
+        - $ref: "#/components/parameters/SandboxId"
+        - name: path
+          in: query
+          required: true
+          schema: { type: string }
+        - name: recursive
+          in: query
+          schema: { type: string, enum: ["1", "true"] }
+          description: 删除目录时是否递归
+      responses:
+        "200":
+          description: Deleted
+        "404":
+          description: Not found
   /v1/usage:
     get:
       operationId: getUsage
