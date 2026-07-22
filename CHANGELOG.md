@@ -7,6 +7,7 @@
 
 ### Added
 
+- `pnpm pack:check`：1.0 前 tarball 审阅（不 publish）
 - Spectral OpenAPI lint（`.spectral.yaml`）与 `pnpm lint:openapi` / `pnpm ci`
 - 错误码 `check:errors` 与 OpenAPI / Zod 双源说明
 

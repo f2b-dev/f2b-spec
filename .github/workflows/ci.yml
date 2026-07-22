@@ -25,3 +25,5 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm check:errors
       - run: pnpm lint:openapi
+      # 1.0 前只 pack 审阅，禁止 publish
+      - run: pnpm pack:check

@@ -23,7 +23,8 @@
     "lint": "tsc --noEmit",
     "check:errors": "node scripts/check-error-codes.mjs",
     "lint:openapi": "spectral lint openapi/sandbox-v1.yaml openapi/tunnel-v1.yaml",
-    "ci": "pnpm typecheck && pnpm check:errors && pnpm lint:openapi"
+    "ci": "pnpm typecheck && pnpm check:errors && pnpm lint:openapi",
+    "pack:check": "bash scripts/pack-check.sh"
   },
   "dependencies": {
     "zod": "^3.24.2"
