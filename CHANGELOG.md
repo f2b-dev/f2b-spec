@@ -13,6 +13,7 @@
 
 ### Changed
 
+- devDependency `@stoplight/spectral-cli` 6.14.2 → 6.16.2
 - OpenAPI servers 示例指向 `127.0.0.1:13287`
 
 ## [0.1.0] - 2026-07
