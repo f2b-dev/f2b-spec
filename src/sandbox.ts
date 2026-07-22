@@ -118,6 +118,21 @@ export const DeleteFileQuerySchema = z.object({
 });
 export type DeleteFileQuery = z.infer<typeof DeleteFileQuerySchema>;
 
+/** POST /v1/sandboxes/{id}/files/mkdir */
+export const MkdirSchema = z.object({
+  path: z.string().min(1).max(4096),
+  /** 默认 true：创建中间目录 */
+  recursive: z.boolean().optional().default(true),
+});
+export type MkdirInput = z.infer<typeof MkdirSchema>;
+
+/** POST /v1/sandboxes/{id}/files/rename */
+export const RenameFileSchema = z.object({
+  from: z.string().min(1).max(4096),
+  to: z.string().min(1).max(4096),
+});
+export type RenameFileInput = z.infer<typeof RenameFileSchema>;
+
 export const FileEntrySchema = z.object({
   path: z.string(),
   name: z.string(),

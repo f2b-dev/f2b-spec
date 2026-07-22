@@ -243,6 +243,36 @@ paths:
           description: Deleted
         "404":
           description: Not found
+  /v1/sandboxes/{id}/files/mkdir:
+    post:
+      operationId: mkdir
+      summary: 创建目录
+      parameters:
+        - $ref: "#/components/parameters/SandboxId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/Mkdir" }
+      responses:
+        "201":
+          description: Created
+  /v1/sandboxes/{id}/files/rename:
+    post:
+      operationId: renameFile
+      summary: 重命名或移动文件/目录
+      parameters:
+        - $ref: "#/components/parameters/SandboxId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/RenameFile" }
+      responses:
+        "200":
+          description: Renamed
+        "404":
+          description: Source not found
   /v1/usage:
     get:
       operationId: getUsage
@@ -382,6 +412,18 @@ components:
         path: { type: string }
         content: { type: string }
         encoding: { type: string, enum: [utf8, base64], default: utf8 }
+    Mkdir:
+      type: object
+      required: [path]
+      properties:
+        path: { type: string }
+        recursive: { type: boolean, default: true }
+    RenameFile:
+      type: object
+      required: [from, to]
+      properties:
+        from: { type: string }
+        to: { type: string }
     UsageDayBucket:
       type: object
       required: [day, sandboxHours, commands, durationMs]
