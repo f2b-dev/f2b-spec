@@ -47,6 +47,10 @@ paths:
         - name: projectId
           in: query
           schema: { type: string }
+        - name: status
+          in: query
+          description: 按状态过滤；逗号分隔多状态，如 running,paused
+          schema: { type: string }
       responses:
         "200":
           description: OK
