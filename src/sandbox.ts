@@ -19,10 +19,30 @@ export const CreateSandboxSchema = z.object({
   template: z.string().min(1).max(64).default("base"),
   timeoutMs: z.number().int().positive().max(24 * 60 * 60 * 1000).optional(),
   allowInternetAccess: z.boolean().default(false),
+  /** 用户自定义标签（string→string）；控制面持久化，不进 guest 密钥 */
   metadata: z.record(z.string()).optional(),
   projectId: z.string().min(1).max(64).default("default"),
 });
 export type CreateSandboxInput = z.infer<typeof CreateSandboxSchema>;
+
+/** PATCH 沙箱：延期 timeout、合并 metadata（活动态） */
+export const UpdateSandboxSchema = z
+  .object({
+    /** 新的存活超时（从 startedAt 起算）；null 表示取消超时 */
+    timeoutMs: z
+      .number()
+      .int()
+      .positive()
+      .max(24 * 60 * 60 * 1000)
+      .nullable()
+      .optional(),
+    /** 浅合并进现有 metadata；值不可覆盖为非 string */
+    metadata: z.record(z.string()).optional(),
+  })
+  .refine((v) => v.timeoutMs !== undefined || v.metadata !== undefined, {
+    message: "at least one of timeoutMs, metadata required",
+  });
+export type UpdateSandboxInput = z.infer<typeof UpdateSandboxSchema>;
 
 export const SandboxRecordSchema = z.object({
   id: z.string(),
@@ -38,6 +58,8 @@ export const SandboxRecordSchema = z.object({
   cpu: z.string(),
   memory: z.string(),
   error: z.string().nullable(),
+  /** 用户 metadata；缺省为空对象 */
+  metadata: z.record(z.string()).default({}),
   createdAt: z.string(),
   updatedAt: z.string(),
   startedAt: z.string().nullable(),

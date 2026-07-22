@@ -89,6 +89,25 @@ paths:
                 type: object
                 properties:
                   sandbox: { $ref: "#/components/schemas/SandboxRecord" }
+    patch:
+      operationId: updateSandbox
+      summary: 更新沙箱（延期 timeoutMs / 合并 metadata）
+      parameters:
+        - $ref: "#/components/parameters/SandboxId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/UpdateSandbox" }
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sandbox: { $ref: "#/components/schemas/SandboxRecord" }
     delete:
       operationId: killSandbox
       parameters:
@@ -276,6 +295,18 @@ components:
         metadata:
           type: object
           additionalProperties: { type: string }
+    UpdateSandbox:
+      type: object
+      description: 至少提供 timeoutMs 或 metadata 之一
+      properties:
+        timeoutMs:
+          type: integer
+          nullable: true
+          description: 从 startedAt 起算的存活超时；null 取消超时
+        metadata:
+          type: object
+          additionalProperties: { type: string }
+          description: 浅合并进现有 metadata
     SandboxRecord:
       type: object
       required: [id, name, template, status, projectId, backend]
@@ -297,6 +328,9 @@ components:
         cpu: { type: string }
         memory: { type: string }
         error: { type: string, nullable: true }
+        metadata:
+          type: object
+          additionalProperties: { type: string }
         createdAt: { type: string, format: date-time }
         updatedAt: { type: string, format: date-time }
         startedAt: { type: string, format: date-time, nullable: true }
