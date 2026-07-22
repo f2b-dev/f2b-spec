@@ -14,7 +14,8 @@
   "files": ["src", "openapi", "errors", "README.md", "LICENSE"],
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "check:errors": "node scripts/check-error-codes.mjs"
   },
   "dependencies": {
     "zod": "^3.24.2"

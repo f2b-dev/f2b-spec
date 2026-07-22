@@ -508,10 +508,29 @@ components:
         popular: { type: boolean }
     ApiError:
       type: object
+      required: [error]
       properties:
         error:
           type: object
+          required: [code, message]
           properties:
-            code: { type: string }
+            code:
+              type: string
+              description: 与 errors/codes.json / ErrorCode 对齐
+              enum:
+                - VALIDATION_ERROR
+                - INVALID_PATH
+                - UNAUTHORIZED
+                - NOT_FOUND
+                - SANDBOX_NOT_FOUND
+                - TUNNEL_NOT_FOUND
+                - SANDBOX_NOT_RUNNING
+                - SANDBOX_ALREADY_TERMINAL
+                - TUNNEL_ALREADY_CLOSED
+                - COMMAND_TIMEOUT
+                - COMMAND_FAILED
+                - CAPACITY_EXCEEDED
+                - BACKEND_UNAVAILABLE
+                - INTERNAL
             message: { type: string }
             details: {}
