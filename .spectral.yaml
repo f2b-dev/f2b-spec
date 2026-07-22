@@ -1,0 +1,18 @@
+# Spectral ruleset — OpenAPI 3.x 基线
+extends: ["spectral:oas"]
+rules:
+  # 本地/开发示例允许 localhost
+  oas3-api-servers: off
+  # 文档型契约：部分响应仅有 description，允许宽松
+  operation-description: off
+  operation-operationId: error
+  operation-tags: off
+  info-contact: off
+  info-license: warn
+  # 路径参数与 schema 完整性
+  path-params: error
+  no-$ref-siblings: error
+  openapi-tags: off
+  operation-success-response: error
+  # ApiError 等组件供文档/SDK 引用，未必每个 response 都 $ref
+  oas3-unused-component: off

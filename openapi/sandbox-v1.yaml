@@ -8,8 +8,8 @@ info:
   license:
     name: Apache-2.0
 servers:
-  - url: http://localhost:8787
-    description: local f2b-sandbox
+  - url: http://127.0.0.1:13287
+    description: local f2b-sandbox（默认端口）
 paths:
   /v1/api-keys:
     get:

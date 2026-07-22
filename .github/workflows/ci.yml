@@ -11,7 +11,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  typecheck:
+  check:
+    name: typecheck + errors + openapi lint
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -22,3 +23,5 @@ jobs:
       - run: corepack enable && corepack prepare pnpm@9.15.0 --activate
       - run: pnpm install --frozen-lockfile
       - run: pnpm typecheck
+      - run: pnpm check:errors
+      - run: pnpm lint:openapi
